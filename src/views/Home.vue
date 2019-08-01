@@ -10,12 +10,12 @@
       <p>name:{{product.name}}</p>
       <p>image_url: {{product.image_url}}</p>
       <img v-bind:src="product.image_url" v-bind:alt="product.name">
-      <img width="150px" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
-      <p><button v-on:click="setRecipe(recipe)">Show more info</button></p>
-      <div v-if="currentRecipe === recipe">
-        <p>directions: {{ recipe.directions }}</p>
-        <p>ingredients {{ recipe.ingredients }}</p>
-        <p>prep time {{ recipe.prep_time }}</p>
+      <img width="150px" v-bind:src="product.image_url" v-bind:alt="product.title">
+      <p><button v-on:click="setProduct(product)">Show more info</button></p>
+      <div v-if="currentProduct === product">
+        <p>directions: {{ product.directions }}</p>
+        <p>ingredients {{ product.ingredients }}</p>
+        <p>prep time {{ product.prep_time }}</p>
       </div>
       <hr>
     </div>
@@ -59,7 +59,7 @@ export default {
       axios.post('/api/products', newProduct).then(response => {
         console.log('in the callback for create')
         console.log(response.data);
-        this.recipes.push(response.data);
+        this.products.push(response.data);
       })
     },
     setProduct: function(theProduct) {
