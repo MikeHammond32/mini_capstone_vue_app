@@ -13,9 +13,16 @@
       <img width="150px" v-bind:src="product.image_url" v-bind:alt="product.title">
       <p><button v-on:click="setProduct(product)">Show more info</button></p>
       <div v-if="currentProduct === product">
-        <p>directions: {{ product.directions }}</p>
-        <p>ingredients {{ product.ingredients }}</p>
-        <p>prep time {{ product.prep_time }}</p>
+    
+
+         <p>Name: <input type="text" v-model="newProductName"></p>
+         <p>Price: <input type="text" v-model="newProductPrice"></p>
+         <p>Description: <input type="text" v-model="newProductDescription"></p>
+          <p>ImageUrl: <input type="text" v-model="newProductImageUrl"></p>
+          <button v-on:click="updateProduct(product)">Update the product</button>
+          <hr>
+          <button v-on:click="destroyProduct(product)">Destroy the product</button>
+          <hr>
       </div>
       <hr>
     </div>
@@ -66,6 +73,27 @@ export default {
       console.log('setting the product');
       console.log(theProduct);
       this.currentProduct = theProduct;
+    },
+    updateProduct: function(theProduct) {
+      console.log('in updating product');
+      console.log(theProduct);
+      axios.patch('/api/products/' + theProduct.id, theProduct).then(response => {
+        console.log(response.data);
+        theProduct.name = response.data.name;
+        theProduct.description = response.data.description;
+        theProduct.image_url = response.data.image_url;
+        theProduct.price = response.data.price;
+
+      })
+    },
+    destroyProduct: function(theProduct) {
+      console.log('destroying product');
+      console.log(theProduct)
+      axios.delete('/api/products/' + theProduct.id).then(response => {
+        console.log(response.data);
+        var index = this.products.indexOf(theProduct);
+        this.products.splice(index, 1);
+      })
     }
   }
 };
